@@ -1,0 +1,41 @@
+<project name="slf4j-rabbitmq" default="jar" basedir=".">
+
+	<!-- specify properties in build.properties -->
+	<property file="build.properties"/>
+	
+	<path id="build.class.path">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<path id="runtime.class.path">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete dir="${gen.dir}" quiet="true" />
+	</target>
+
+	<target name="init">
+		<mkdir dir="${gen.dir}"/>
+		<mkdir dir="${gen.dist.dir}"/>
+		<mkdir dir="${gen.build.dir}"/>
+	</target>
+
+	<target name="compile" depends="init">
+		<javac includeantruntime="false" destdir="${gen.build.dir}" deprecation="yes" debug="yes">
+			<src path="${src.main.java.dir}"/>
+			<classpath refid="build.class.path"/>
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="${gen.dist.dir}/slf4j-rabbitmq-1.7.5.jar">
+			<fileset dir="${gen.build.dir}" />
+			<fileset dir="${src.main.config.dir}" />
+		</jar>
+	</target>
+</project>
